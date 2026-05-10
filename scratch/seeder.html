@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareConnect Comprehensive Seeder</title>
+    <style>
+        body { font-family: 'Outfit', sans-serif; padding: 40px; line-height: 1.6; background: #f0f7ff; color: #1e293b; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { color: #0a73ff; }
+        .log { background: #1e293b; color: #4ade80; padding: 20px; border-radius: 10px; margin-top: 20px; font-family: monospace; overflow-y: auto; max-height: 300px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>CareConnect Comprehensive Seeder</h1>
+        <p>Populating database with specialized nurses, patients, care requests, and vitals...</p>
+        <div id="log-area" class="log">Initializing...</div>
+        <div id="status"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBj49uFVAdSG1jbELVIdYY6KvG0b8fECiQ",
+          authDomain: "new-careconnect.firebaseapp.com",
+          projectId: "new-careconnect",
+          storageBucket: "new-careconnect.firebasestorage.app",
+          messagingSenderId: "7797461074",
+          appId: "1:7797461074:web:4a0cd6b23320620a27cf8b",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const logArea = document.getElementById('log-area');
+
+        function log(msg) {
+            logArea.innerHTML += `<div>> ${msg}</div>`;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        async function seed() {
+            try {
+                log("Starting comprehensive seed...");
+
+                // 1. Specialized Nurses (including Dementia Care)
+                const nurses = [
+                    {
+                        uid: "nurse_dementia_1",
+                        name: "Dr. Elena Gilbert",
+                        role: "nurse",
+                        specialty: "Dementia & Alzheimer's Care",
+                        experience: "12 Years",
+                        location: "Brooklyn, NY",
+                        rating: 5.0,
+                        bio: "Specialized in behavioral management and cognitive therapy for late-stage dementia patients.",
+                        email: "elena.g@careconnect.com",
+                        image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=2070"
+                    },
+                    {
+                        uid: "nurse_dementia_2",
+                        name: "James Wilson, RN",
+                        role: "nurse",
+                        specialty: "Memory Care Specialist",
+                        experience: "15 Years",
+                        location: "Queens, NY",
+                        rating: 4.9,
+                        bio: "Focused on creating safe, familiar environments for seniors with memory loss.",
+                        email: "james.w@careconnect.com",
+                        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=2070"
+                    },
+                    {
+                        uid: "nurse_gen_1",
+                        name: "Nurse Maya Patel",
+                        role: "nurse",
+                        specialty: "Palliative & Elderly Care",
+                        experience: "9 Years",
+                        location: "Manhattan, NY",
+                        rating: 4.8,
+                        bio: "Expert in pain management and emotional support for long-term home care.",
+                        email: "maya.p@careconnect.com",
+                        image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=2070"
+                    }
+                ];
+
+                for (const n of nurses) {
+                    await setDoc(doc(db, "users", n.uid), { ...n, createdAt: serverTimestamp() });
+                    log(`Added Nurse: ${n.name} (Specialty: ${n.specialty})`);
+                }
+
+                // 2. Sample Patients
+                const patients = [
+                    {
+                        uid: "patient_1",
+                        name: "Robert Miller",
+                        role: "family",
+                        email: "robert.m@example.com",
+                        phone: "+1 555-0101",
+                        age: 78,
+                        condition: "Early Stage Alzheimer's",
+                        address: "123 Oak Lane, NY"
+                    },
+                    {
+                        uid: "patient_2",
+                        name: "Alice Thompson",
+                        role: "family",
+                        email: "alice.t@example.com",
+                        phone: "+1 555-0202",
+                        age: 82,
+                        condition: "Post-Stroke Recovery",
+                        address: "456 Maple St, NY"
+                    }
+                ];
+
+                for (const p of patients) {
+                    await setDoc(doc(db, "users", p.uid), { ...p, createdAt: serverTimestamp() });
+                    log(`Added Patient Profile: ${p.name}`);
+                }
+
+                // 3. Care Requests (Assigning patients to nurses)
+                const requests = [
+                    {
+                        id: "req_1",
+                        nurseId: "nurse_dementia_1",
+                        userId: "patient_1",
+                        status: "accepted",
+                        serviceType: "Full-day Memory Support",
+                        requestDate: serverTimestamp()
+                    },
+                    {
+                        id: "req_2",
+                        nurseId: "nurse_dementia_1",
+                        userId: "patient_2",
+                        status: "accepted",
+                        serviceType: "Night Shift Recovery",
+                        requestDate: serverTimestamp()
+                    }
+                ];
+
+                for (const r of requests) {
+                    await setDoc(doc(db, "careRequests", r.id), { ...r });
+                    log(`Linked Patient to Nurse: Request ${r.id} (${r.status})`);
+                }
+
+                // 4. Initial Vitals for Patients
+                const vitals = [
+                    {
+                        uid: "patient_1",
+                        data: {
+                            heartRate: 72,
+                            bp: "128/84",
+                            sugar: 110,
+                            spo2: 98,
+                            updatedAt: serverTimestamp(),
+                            aiResult: {
+                                risk_score: 15,
+                                risk_label: "Low",
+                                reasons: ["Vitals are within stable range for age group"]
+                            }
+                        }
+                    },
+                    {
+                        uid: "patient_2",
+                        data: {
+                            heartRate: 88,
+                            bp: "145/95",
+                            sugar: 210,
+                            spo2: 94,
+                            updatedAt: serverTimestamp(),
+                            aiResult: {
+                                risk_score: 65,
+                                risk_label: "High",
+                                reasons: ["Elevated Blood Pressure", "High Blood Sugar (Hyperglycemia)", "SpO2 slightly below optimal"]
+                            }
+                        }
+                    }
+                ];
+
+                for (const v of vitals) {
+                    await setDoc(doc(db, "users", v.uid, "vitals", "latest"), v.data);
+                    log(`Added Live Vitals for: ${v.uid}`);
+                }
+
+                log("🎉 COMPLETE! All dummy data seeded successfully.");
+                document.getElementById('status').innerHTML = "<h2>✅ Database is now fully populated!</h2>";
+
+            } catch (error) {
+                log(`❌ ERROR: ${error.message}`);
+                console.error(error);
+            }
+        }
+
+        seed();
+    </script>
+</body>
+</html>
+

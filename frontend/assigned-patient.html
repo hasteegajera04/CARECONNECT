@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Assigned Patients</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 100px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -1.5px;
+}
+
+.page-header p {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.patient-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 28px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: 0.3s;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.patient-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(10, 115, 255, 0.12);
+}
+
+.patient-top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.avatar-circle {
+  width: 55px;
+  height: 55px;
+  background: #f1f5f9;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 22px;
+}
+
+.patient-name {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.patient-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.meta-item {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.meta-item span {
+  display: block;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.meta-item strong {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-profile {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+
+.btn-vitals {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 8px 16px rgba(10, 115, 255, 0.2);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card-bg);
+  border-radius: 30px;
+  color: var(--text-muted);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='nurse-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="nurse-dashboard.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Dashboard
+  </a>
+</div>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Assigned Patients</h1>
+    <p>You are currently managing the care for these individuals.</p>
+  </div>
+
+  <div class="patient-grid" id="patientGrid">
+    <!-- Dynamic Content -->
+  </div>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const auth = getAuth();
+const patientGrid = document.getElementById("patientGrid");
+
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+  loadAssignedPatients(user.uid);
+});
+
+async function loadAssignedPatients(nurseUid) {
+  patientGrid.innerHTML = "";
+
+  const q = query(
+    collection(db, "careRequests"),
+    where("nurseId", "==", nurseUid),
+    where("status", "==", "accepted")
+  );
+
+  const snapshot = await getDocs(q);
+
+  if (snapshot.empty) {
+    patientGrid.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-user-slash" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+        <h3>No Assigned Patients</h3>
+        <p>Go to your requests to accept care assignments.</p>
+      </div>
+    `;
+    return;
+  }
+
+  for (const req of snapshot.docs) {
+    const data = req.data();
+    const patientSnap = await getDoc(doc(db, "users", data.userId));
+    if (!patientSnap.exists()) continue;
+
+    const patient = patientSnap.data();
+
+    const card = document.createElement("div");
+    card.className = "patient-card";
+
+    card.innerHTML = `
+      <div class="patient-top">
+        <div class="avatar-circle"><i class="fa-solid fa-user"></i></div>
+        <div class="patient-name">${patient.patientName || "Patient"}</div>
+      </div>
+      
+      <div class="patient-meta">
+        <div class="meta-item">
+          <span>Age</span>
+          <strong>${patient.age || "N/A"}</strong>
+        </div>
+        <div class="meta-item">
+          <span>Blood Group</span>
+          <strong>${patient.bloodGroup || "N/A"}</strong>
+        </div>
+        <div class="meta-item">
+          <span>Gender</span>
+          <strong>${patient.gender || "N/A"}</strong>
+        </div>
+        <div class="meta-item">
+          <span>City</span>
+          <strong>${patient.city || "N/A"}</strong>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="action-btn btn-vitals" 
+          onclick="window.location.href='nurse-update-vitals.html?patientId=${patientSnap.id}&requestId=${req.id}'">
+          <i class="fa-solid fa-heart-pulse"></i> Update Vitals
+        </button>
+        <button class="action-btn btn-profile" 
+          onclick="window.location.href='patient-profile.html?uid=${patientSnap.id}'">
+          <i class="fa-solid fa-user-tag"></i> View Full Profile
+        </button>
+      </div>
+    `;
+
+    patientGrid.appendChild(card);
+  }
+}
+</script>
+
+</body>
+</html>
+

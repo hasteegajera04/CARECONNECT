@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Patient Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --sidebar-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255, 255, 255, 0.9);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 280px;
+  background: var(--sidebar-bg);
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.03);
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 50px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.logo span {
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text-main);
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border-radius: 16px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.nav-link.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 10px 20px rgba(10, 115, 255, 0.2);
+}
+
+.nav-link i {
+  font-size: 18px;
+  width: 24px;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.welcome-text h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.welcome-text p {
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+/* PATIENT PROFILE CARD */
+.profile-card {
+  background: var(--card-bg);
+  padding: 35px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-bottom: 30px;
+  animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.avatar-large {
+  width: 100px;
+  height: 100px;
+  background: #f1f5f9;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: var(--primary);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.tags-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border: 1px solid #f1f5f9;
+}
+
+.tag.warning {
+  background: #fff7ed;
+  color: #f97316;
+  border-color: #ffedd5;
+}
+
+/* GUARDIAN BOX */
+.guardian-info {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 20px;
+  min-width: 280px;
+}
+
+.guardian-info h4 {
+  color: var(--primary);
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.guardian-info p {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.guardian-info p strong {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* HERO SECTION */
+.hero-card {
+  position: relative;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(10, 115, 255, 0.9) 0%, rgba(10, 115, 255, 0.4) 100%);
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  max-width: 600px;
+}
+
+.hero-overlay h2 {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-overlay p {
+  font-size: 18px;
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.hero-btn {
+  background: white;
+  color: var(--primary);
+  padding: 18px 35px;
+  border-radius: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  width: fit-content;
+}
+
+.hero-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+footer {
+  margin-top: 50px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+  
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+      <span>CareConnect</span>
+    </div>
+
+    <div class="nav-menu">
+      <a href="patient-dashboard.html" class="nav-link active">
+        <i class="fa-solid fa-house-chimney"></i> Dashboard
+      </a>
+      <a href="patient-profile.html" class="nav-link">
+        <i class="fa-solid fa-user"></i> My Health Profile
+      </a>
+      <a href="explore-nurses.html" class="nav-link">
+        <i class="fa-solid fa-user-nurse"></i> Book a Nurse
+      </a>
+      <a href="patient-vitals.html" class="nav-link">
+        <i class="fa-solid fa-heart-pulse"></i> My Vitals
+      </a>
+      <a href="ai.html" class="nav-link">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Health Insights
+      </a>
+      <a href="request-status.html" class="nav-link">
+        <i class="fa-solid fa-calendar-check"></i> Care Requests
+      </a>
+      <a href="patient-details-update.html" class="nav-link">
+        <i class="fa-solid fa-gear"></i> Settings
+      </a>
+      <a href="#" id="logoutBtn" class="nav-link" style="margin-top: auto; color: #ef4444;">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    
+    <header class="top-bar">
+      <div class="welcome-text">
+        <h1 id="welcomeTitle">Welcome Back</h1>
+        <p>Your health journey is our priority.</p>
+      </div>
+      <div class="user-action">
+        <i class="fa-regular fa-bell" style="font-size: 20px; color: var(--text-muted); cursor: pointer;"></i>
+      </div>
+    </header>
+
+    <!-- PATIENT CARD -->
+    <div class="profile-card">
+      <div class="avatar-large">✦</div>
+      <div class="info-content">
+        <h2 id="patientName">Loading...</h2>
+        <div class="tags-group">
+          <span class="tag" id="patientAge">Age: --</span>
+          <span class="tag" id="patientGender">Gender: --</span>
+          <span class="tag" id="patientBlood">Blood: --</span>
+          <span class="tag warning">Aadhaar Pending</span>
+        </div>
+      </div>
+
+      <div class="guardian-info">
+        <h4>Primary Guardian</h4>
+        <p><strong>Name:</strong> <span id="guardianName">--</span></p>
+        <p><strong>Relation:</strong> <span id="guardianRelation">--</span></p>
+        <p><strong>Contact:</strong> <span id="guardianPhone">--</span></p>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero-card">
+      <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1000" alt="Home Healthcare">
+      <div class="hero-overlay">
+        <h2>Professional Care, at Your Doorstep</h2>
+        <p>Book verified medical professionals for compassionate home healthcare services tailored to your needs.</p>
+        <a href="explore-nurses.html" class="hero-btn">
+          Explore Nurses <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <footer>© 2025 CareConnect — Modern Home Healthcare Platform</footer>
+  </main>
+
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      
+      document.getElementById("patientName").innerText = data.patientName || "User";
+      document.getElementById("welcomeTitle").innerText = `Hello, ${data.patientName || 'User'}`;
+      document.getElementById("patientAge").innerText = data.age ? `${data.age} Years` : "Age N/A";
+      document.getElementById("patientGender").innerText = data.gender || "Gender N/A";
+      document.getElementById("patientBlood").innerText = data.bloodGroup || "Blood N/A";
+
+      document.getElementById("guardianName").innerText = data.guardianName || "N/A";
+      document.getElementById("guardianRelation").innerText = data.guardianRelation || "N/A";
+      document.getElementById("guardianPhone").innerText = data.guardianPhone || "N/A";
+    }
+  } catch (err) {
+    console.error("Dashboard error:", err);
+  }
+});
+
+document.getElementById("logoutBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  auth.signOut().then(() => {
+    window.location.href = "login.html";
+  });
+});
+</script>
+
+</body>
+</html>
+

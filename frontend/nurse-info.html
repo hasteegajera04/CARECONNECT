@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | My Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.back-btn:hover { transform: translateX(-5px); }
+
+.profile-card {
+  background: var(--white);
+  width: 100%;
+  max-width: 900px;
+  padding: 45px;
+  border-radius: 30px;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.1);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  margin-top: 60px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.photo-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  padding: 5px;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  box-shadow: 0 15px 30px rgba(10, 115, 255, 0.2);
+}
+
+.photo-circle img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+}
+
+.card-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -1px;
+}
+
+.card-header p {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.section-label {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.info-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-box {
+  background: #f8fafc;
+  padding: 16px 20px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid transparent;
+  transition: 0.3s;
+}
+
+.data-box:hover {
+  background: white;
+  border-color: var(--primary);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.data-box i {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.data-box input, .data-box textarea {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.data-box textarea {
+  min-height: 100px;
+  resize: none;
+  line-height: 1.6;
+}
+
+.badge-pending {
+  background: #fff7ed;
+  color: #f97316;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.edit-action {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.edit-btn {
+  background: var(--primary);
+  color: white;
+  padding: 16px 40px;
+  border-radius: 18px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 10px 20px rgba(10, 115, 255, 0.2);
+}
+
+.edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(10, 115, 255, 0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='nurse-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="nurse-dashboard.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+  </a>
+</div>
+
+
+<div class="profile-card">
+  <div class="card-header">
+    <div class="photo-circle">
+      <img src="https://i.imgur.com/6VBx3io.png" alt="Nurse Profile">
+    </div>
+    <h1 id="dispName">Loading...</h1>
+    <p id="dispRole">Professional Registered Nurse</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="section-label">Personal Information</div>
+
+    <div class="info-field">
+      <label>Full Name</label>
+      <div class="data-box">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="fullName" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Email Address</label>
+      <div class="data-box">
+        <i class="fa-solid fa-envelope"></i>
+        <input id="email" type="email" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Phone Number</label>
+      <div class="data-box">
+        <i class="fa-solid fa-phone"></i>
+        <input type="text" id="phone" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Current City</label>
+      <div class="data-box">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <input type="text" id="city" readonly>
+      </div>
+    </div>
+
+    <div class="section-label">Professional Details</div>
+
+    <div class="info-field">
+      <label>Specialization</label>
+      <div class="data-box">
+        <i class="fa-solid fa-stethoscope"></i>
+        <input type="text" id="specialization" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Total Experience</label>
+      <div class="data-box">
+        <i class="fa-solid fa-award"></i>
+        <input type="text" id="experience" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Availability</label>
+      <div class="data-box">
+        <i class="fa-solid fa-calendar-check"></i>
+        <input type="text" id="availability" readonly>
+      </div>
+    </div>
+
+    <div class="info-field">
+      <label>Consultation Cost</label>
+      <div class="data-box">
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+        <input type="text" id="cost" readonly>
+      </div>
+    </div>
+
+    <div class="section-label">About & Languages</div>
+
+    <div class="info-field">
+      <label>Languages Spoken</label>
+      <div class="data-box">
+        <i class="fa-solid fa-language"></i>
+        <input type="text" id="languages" readonly>
+      </div>
+    </div>
+
+    <div class="info-field" style="grid-column: 1 / -1;">
+      <label>Professional Bio</label>
+      <div class="data-box">
+        <textarea id="about" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="section-label">Trust & Verification</div>
+
+    <div class="info-field">
+      <label>Aadhaar Identity</label>
+      <div class="data-box">
+        <i class="fa-solid fa-shield-check"></i>
+        <input type="text" value="Document Uploaded" readonly>
+      </div>
+      <div class="badge-pending">Status: Verification in Progress</div>
+    </div>
+  </div>
+
+  <div class="edit-action">
+    <button class="edit-btn" onclick="location.href='nurse-infostore.html'">
+      <i class="fa-solid fa-user-pen"></i> Edit Profile Settings
+    </button>
+  </div>
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const docRef = doc(db, "users", user.uid);
+    const snap = await getDoc(docRef);
+
+    if (snap.exists()) {
+      const d = snap.data();
+      document.getElementById("dispName").textContent = d.fullName || "Nurse";
+      document.getElementById("fullName").value = d.fullName || "N/A";
+      document.getElementById("email").value = d.email || user.email;
+      document.getElementById("phone").value = d.phone || "N/A";
+      document.getElementById("city").value = d.city || "N/A";
+      document.getElementById("specialization").value = d.specialization || "General Nursing";
+      document.getElementById("experience").value = d.experience ? d.experience + " Years" : "N/A";
+      document.getElementById("availability").value = d.availability || "Full-Time";
+      document.getElementById("cost").value = d.cost ? "₹" + d.cost + " / day" : "N/A";
+      document.getElementById("languages").value = d.languages || "N/A";
+      document.getElementById("about").value = d.about || "No professional bio provided yet.";
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>
+
+</body>
+</html>
+

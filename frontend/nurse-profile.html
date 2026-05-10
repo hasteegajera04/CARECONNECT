@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | View Nurse Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 80px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-card {
+  background: var(--card-bg);
+  border-radius: 35px;
+  padding: 50px;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  background: #f1f5f9;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: var(--primary);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.header-info h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.specialty-tag {
+  display: inline-block;
+  background: #e0f2fe;
+  color: var(--primary);
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-item label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item span {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.summary-section {
+  background: #f8fafc;
+  padding: 30px;
+  border-radius: 25px;
+  margin-bottom: 40px;
+}
+
+.summary-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--text-main);
+}
+
+.summary-section p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.request-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.price-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-display .label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.price-display .amount {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.request-btn {
+  flex: 1;
+  max-width: 400px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 15px 30px rgba(10, 115, 255, 0.25);
+}
+
+.request-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(10, 115, 255, 0.3);
+}
+
+.request-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="history.back()">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="#" onclick="history.back(); return false;" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Back
+  </a>
+</div>
+
+<div class="container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-wrapper">👩‍⚕️</div>
+      <div class="header-info">
+        <div class="specialty-tag" id="specialization">Loading...</div>
+        <h1 id="name">Nurse Profile</h1>
+        <div class="info-item" style="flex-direction: row; gap: 10px; align-items: center;">
+          <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
+          <span style="font-size: 14px;">4.9 (120+ Reviews)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Experience</label>
+        <span id="experience">-- Years</span>
+      </div>
+      <div class="info-item">
+        <label>Location</label>
+        <span id="city">--</span>
+      </div>
+      <div class="info-item">
+        <label>Availability</label>
+        <span id="availability" style="color: #22c55e;">Available</span>
+      </div>
+      <div class="info-item">
+        <label>Languages</label>
+        <span id="languages">English, Hindi</span>
+      </div>
+    </div>
+
+    <div class="summary-section">
+      <h3>Professional Summary</h3>
+      <p id="summary">Fetching professional background...</p>
+    </div>
+
+    <div class="request-action">
+      <div class="price-display">
+        <span class="label">Consultation Fee</span>
+        <span class="amount" id="price">₹ -- / day</span>
+      </div>
+      <button class="request-btn" id="requestBtn">
+        <i class="fa-solid fa-calendar-check"></i> Request Care Services
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const params = new URLSearchParams(window.location.search);
+const uid = params.get("uid");
+const auth = getAuth();
+let currentUser = null;
+
+if (!uid) {
+  window.location.href = "explore-nurses.html";
+}
+
+async function loadNurseProfile() {
+  try {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      alert("Nurse profile not found");
+      window.location.href = "explore-nurses.html";
+      return;
+    }
+    const n = snap.data();
+
+    // Map database fields to UI fields (Supporting both legacy and new seeder formats)
+    const displayName = n.name || n.fullName || "Certified Nurse";
+    const displaySpecialty = n.specialty || n.specialization || "General Care";
+    const displayExperience = n.experience ? (n.experience.includes('Years') ? n.experience : `${n.experience} Years`) : "5 Years";
+    const displayPrice = n.cost || n.price || "1200";
+    const displayLocation = n.location || n.city || "Nearby";
+    const displayBio = n.bio || n.summary || "A dedicated healthcare professional with extensive experience in providing compassionate home care services.";
+    const displayImage = n.image || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=2070";
+
+    document.getElementById("name").textContent = displayName;
+    document.getElementById("specialization").textContent = displaySpecialty;
+    document.getElementById("experience").textContent = displayExperience;
+    document.getElementById("price").textContent = `₹${displayPrice} / day`;
+    document.getElementById("city").textContent = displayLocation;
+    document.getElementById("languages").textContent = n.languages || "English, Hindi";
+    document.getElementById("summary").textContent = displayBio;
+    document.getElementById("availability").textContent = n.availability || "Available Now";
+
+    // Update Image
+    const avatarWrapper = document.querySelector(".avatar-wrapper");
+    avatarWrapper.innerHTML = `<img src="${displayImage}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 30px;">`;
+    avatarWrapper.style.overflow = "hidden";
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+onAuthStateChanged(auth, user => {
+  if (user) currentUser = user;
+});
+
+document.getElementById("requestBtn").addEventListener("click", async () => {
+  if (!currentUser) {
+    alert("Please login to request care services");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const btn = document.getElementById("requestBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+  try {
+    await addDoc(collection(db, "careRequests"), {
+      nurseId: uid,
+      userId: currentUser.uid,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    alert("✅ Care request sent successfully! The nurse will be notified.");
+    window.location.href = "post-care-request.html";
+  } catch (error) {
+    console.error(error);
+    alert("Failed to send request. Please try again.");
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Request Care Services';
+  }
+});
+
+loadNurseProfile();
+</script>
+
+</body>
+</html>
+

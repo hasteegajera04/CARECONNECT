@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | My Vitals Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --safe: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 80px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -1.5px;
+}
+
+.page-header p {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.vital-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(10, 115, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: 0.3s;
+}
+
+.vital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.1);
+}
+
+.vital-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.vital-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.vital-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vital-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.vital-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+/* AI BOX */
+.ai-insight-box {
+  background: linear-gradient(135deg, #0a73ff, #0056cc);
+  padding: 40px;
+  border-radius: 35px;
+  color: white;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-insight-box::before {
+  content: '\f0e7';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  font-size: 200px;
+  opacity: 0.1;
+  transform: rotate(-15deg);
+}
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.ai-header i { font-size: 28px; }
+.ai-header h2 { font-size: 22px; font-weight: 700; }
+
+.risk-summary {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.risk-score {
+  width: 100px;
+  height: 100px;
+  border: 6px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.1);
+}
+
+.risk-score span:first-child { font-size: 28px; font-weight: 800; }
+.risk-score span:last-child { font-size: 10px; font-weight: 600; opacity: 0.8; }
+
+.risk-description { flex: 1; }
+.risk-description h3 { font-size: 20px; margin-bottom: 8px; }
+.risk-description p { font-size: 16px; opacity: 0.9; line-height: 1.6; }
+
+.reasons-list {
+  background: rgba(255,255,255,0.15);
+  padding: 20px 25px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.reasons-list ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.reasons-list li {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.log-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.log-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(10, 115, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.log-card h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+}
+
+.log-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 20px;
+  min-height: 80px;
+}
+
+/* Colors */
+.bg-hr { background: #fee2e2; color: #ef4444; }
+.bg-bp { background: #e0f2fe; color: #0ea5e9; }
+.bg-sugar { background: #dcfce7; color: #22c55e; }
+.bg-spo2 { background: #f3e8ff; color: #a855f7; }
+
+.st-safe { background: #dcfce7; color: #166534; }
+.st-danger { background: #fee2e2; color: #991b1b; }
+.st-pending { background: #f1f5f9; color: #475569; }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='patient-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="patient-dashboard.html" class="back-btn">
+    <i class="fa-solid fa-arrow-left"></i> Dashboard
+  </a>
+</div>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Health Vitals Dashboard</h1>
+    <p>Live health metrics monitored by CareConnect AI System</p>
+  </div>
+
+  <div class="vitals-grid">
+    <!-- HR -->
+    <div class="vital-card">
+      <div class="vital-header">
+        <div class="vital-icon bg-hr"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div class="vital-name">Heart Rate</div>
+      </div>
+      <div class="vital-value" id="disp-hr">-- bpm</div>
+      <div class="vital-status st-pending" id="stat-hr">
+        <i class="fa-solid fa-clock"></i> Waiting...
+      </div>
+    </div>
+
+    <!-- BP -->
+    <div class="vital-card">
+      <div class="vital-header">
+        <div class="vital-icon bg-bp"><i class="fa-solid fa-stethoscope"></i></div>
+        <div class="vital-name">Blood Pressure</div>
+      </div>
+      <div class="vital-value" id="disp-bp">-- / --</div>
+      <div class="vital-status st-pending" id="stat-bp">
+        <i class="fa-solid fa-clock"></i> Waiting...
+      </div>
+    </div>
+
+    <!-- Sugar -->
+    <div class="vital-card">
+      <div class="vital-header">
+        <div class="vital-icon bg-sugar"><i class="fa-solid fa-droplet"></i></div>
+        <div class="vital-name">Blood Sugar</div>
+      </div>
+      <div class="vital-value" id="disp-sugar">-- mg/dL</div>
+      <div class="vital-status st-pending" id="stat-sugar">
+        <i class="fa-solid fa-clock"></i> Waiting...
+      </div>
+    </div>
+
+    <!-- SpO2 -->
+    <div class="vital-card">
+      <div class="vital-header">
+        <div class="vital-icon bg-spo2"><i class="fa-solid fa-lungs"></i></div>
+        <div class="vital-name">SpO₂ Level</div>
+      </div>
+      <div class="vital-value" id="disp-spo2">-- %</div>
+      <div class="vital-status st-pending" id="stat-spo2">
+        <i class="fa-solid fa-clock"></i> Waiting...
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY CARE LOGS -->
+  <div class="page-header" style="text-align: left; margin-bottom: 25px; margin-top: 40px;">
+    <h2 style="font-size: 26px;">Daily Care Logs</h2>
+    <p>Last updated details by your caregiver</p>
+  </div>
+
+  <div class="log-grid">
+    <div class="log-card">
+      <h3><i class="fa-solid fa-utensils" style="color: #f97316;"></i> Food & Nutrition</h3>
+      <div class="log-content" id="foodLogDisp">No food updates recorded today.</div>
+    </div>
+    <div class="log-card">
+      <h3><i class="fa-solid fa-comment-medical" style="color: #ef4444;"></i> Patient Complains / Notes</h3>
+      <div class="log-content" id="complaintsDisp">No complaints or behavioral notes reported.</div>
+    </div>
+  </div>
+
+
+  <!-- AI INSIGHTS -->
+  <div class="ai-insight-box">
+    <div class="ai-header">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <h2>AI Clinical Insights</h2>
+    </div>
+
+    <div id="ai-content-area">
+      <p style="opacity: 0.8; font-size: 16px;">Waiting for nurse update to generate live analysis...</p>
+    </div>
+
+    <div id="ai-result-view" style="display: none;">
+      <div class="risk-summary">
+        <div class="risk-score">
+          <span id="ai-score-num">--</span>
+          <span>RISK SCORE</span>
+        </div>
+        <div class="risk-description">
+          <h3 id="ai-label">Analyzing...</h3>
+          <p>Our clinical model has analyzed your latest vitals. Below are the key findings and concerns detected.</p>
+        </div>
+      </div>
+
+      <div class="reasons-list">
+        <ul id="reasons-tags">
+          <!-- Reasons go here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const vitalsRef = doc(db, "users", user.uid, "vitals", "latest");
+
+  onSnapshot(vitalsRef, (snap) => {
+    if (!snap.exists()) return;
+
+    const v = snap.data();
+
+    // Display values
+    document.getElementById("disp-hr").textContent = v.heartRate + " bpm";
+    document.getElementById("disp-bp").textContent = v.bp + " mmHg";
+    document.getElementById("disp-sugar").textContent = v.sugar + " mg/dL";
+    document.getElementById("disp-spo2").textContent = v.spo2 + " %";
+
+    // Daily Logs
+    if (v.foodLog) document.getElementById("foodLogDisp").textContent = v.foodLog;
+    if (v.complaints) document.getElementById("complaintsDisp").textContent = v.complaints;
+
+    // Status coloring
+
+    updateStatus("stat-hr", v.heartRate > 100 || v.heartRate < 50);
+    updateStatus("stat-bp", parseInt(v.bp.split("/")[0]) >= 140);
+    updateStatus("stat-sugar", v.sugar > 200 || v.sugar < 70);
+    updateStatus("stat-spo2", v.spo2 < 95);
+
+    // AI section
+    if (v.aiResult) {
+      document.getElementById("ai-content-area").style.display = "none";
+      document.getElementById("ai-result-view").style.display = "block";
+      
+      document.getElementById("ai-score-num").textContent = v.aiResult.risk_score;
+      document.getElementById("ai-label").textContent = v.aiResult.risk_label + " Risk Detected";
+
+      const tagsList = document.getElementById("reasons-tags");
+      tagsList.innerHTML = "";
+      
+      if (v.aiResult.reasons && v.aiResult.reasons.length > 0) {
+        v.aiResult.reasons.forEach(reason => {
+          const li = document.createElement("li");
+          li.textContent = reason;
+          tagsList.appendChild(li);
+        });
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "Vitals within normal range";
+        tagsList.appendChild(li);
+      }
+    }
+  });
+});
+
+function updateStatus(elementId, isDanger) {
+  const el = document.getElementById(elementId);
+  if (isDanger) {
+    el.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Abnormal';
+    el.className = "vital-status st-danger";
+  } else {
+    el.innerHTML = '<i class="fa-solid fa-circle-check"></i> Normal';
+    el.className = "vital-status st-safe";
+  }
+}
+</script>
+
+</body>
+</html>
+/html>

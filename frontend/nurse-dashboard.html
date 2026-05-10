@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Nurse Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-main: #f8faff;
+  --white: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --sidebar-w: 280px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: var(--bg-main);
+  display: flex;
+  min-height: 100vh;
+  color: var(--text-main);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--white);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0,0,0,0.05);
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 50px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(10, 115, 255, 0.2);
+}
+
+.logo-icon i {
+  color: white;
+  font-size: 20px;
+}
+
+.logo span {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+}
+
+.nav {
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-item i {
+  font-size: 18px;
+}
+
+.nav-item:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.nav-item.active {
+  background: #f0f7ff;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.logout-item {
+  margin-top: auto;
+  color: #ef4444;
+}
+
+.logout-item:hover {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.header-tools {
+  display: flex;
+  gap: 15px;
+}
+
+.tool-btn {
+  width: 48px;
+  height: 48px;
+  background: var(--white);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tool-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.stat-info .stat-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-info .stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* HERO IMAGE */
+.hero-banner {
+  width: 100%;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+}
+
+.hero-overlay h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.hero-overlay p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 50px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo" onclick="location.href='nurse-dashboard.html'">
+    <div class="logo-icon">
+      <i class="fa-solid fa-heart-pulse"></i>
+    </div>
+    <span>CareConnect</span>
+  </div>
+
+  <div class="nav">
+    <div class="nav-item active">
+      <i class="fa-solid fa-grid-2"></i> Dashboard
+    </div>
+
+    <div class="nav-item" onclick="location.href='nurse-info.html'">
+      <i class="fa-solid fa-user-doctor"></i> My Profile
+    </div>
+
+    <div class="nav-item" onclick="location.href='assigned-patient.html'">
+      <i class="fa-solid fa-user-injured"></i> Assigned Patients
+    </div>
+
+    <div class="nav-item" onclick="location.href='nurse-request.html'">
+      <i class="fa-solid fa-clipboard-list"></i> Care Requests
+    </div>
+
+    <div class="nav-item" onclick="location.href='ai.html'">
+      <i class="fa-solid fa-brain"></i> AI Health Alerts
+    </div>
+
+    <div class="nav-item" onclick="location.href='nurse-infostore.html'">
+      <i class="fa-solid fa-sliders"></i> Settings
+    </div>
+  </div>
+
+  <div class="nav-item logout-item" id="logoutBtn">
+    <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="header">
+    <h1>Welcome back, <span id="nurseNameDisplay">Nurse</span></h1>
+    <div class="header-tools">
+      <div class="tool-btn"><i class="fa-regular fa-bell"></i></div>
+      <div class="tool-btn"><i class="fa-regular fa-envelope"></i></div>
+      <div class="tool-btn" style="background: var(--primary); color: white;" onclick="location.href='nurse-info.html'">
+        <i class="fa-regular fa-user"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Total Patients</span>
+        <div class="stat-value" id="valPatients">0</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background: #fff7ed; color: #f97316;">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Pending Requests</span>
+        <div class="stat-value" id="valRequests">0</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;">
+        <i class="fa-solid fa-shield-heart"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">AI Health Alerts</span>
+        <div class="stat-value" id="valAlerts">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-banner">
+    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=2070" alt="Healthcare Professionals">
+    <div class="hero-overlay">
+      <h2>Professional Care, Guaranteed.</h2>
+      <p>Use the sidebar to manage your assignments and monitor patient health with AI-driven insights.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 CareConnect — Empowering Professional Caregivers
+  </div>
+</div>
+
+<script type="module">
+import { db, auth } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const nurseUid = user.uid;
+
+  // Fetch Nurse Profile for Name
+  try {
+    const nurseDoc = await getDoc(doc(db, "users", nurseUid));
+    if (nurseDoc.exists()) {
+      const data = nurseDoc.data();
+      document.getElementById("nurseNameDisplay").textContent = data.name || data.fullName || "Nurse";
+    }
+  } catch (e) { console.error(e); }
+
+  // Count assigned patients
+  const assignedQuery = query(
+    collection(db, "careRequests"),
+    where("nurseId", "==", nurseUid),
+    where("status", "==", "accepted")
+  );
+  const assignedSnapshot = await getDocs(assignedQuery);
+  document.getElementById("valPatients").textContent = assignedSnapshot.size;
+
+  // Count pending requests
+  const pendingQuery = query(
+    collection(db, "careRequests"),
+    where("nurseId", "==", nurseUid),
+    where("status", "==", "pending")
+  );
+  const pendingSnapshot = await getDocs(pendingQuery);
+  document.getElementById("valRequests").textContent = pendingSnapshot.size;
+
+  // Count AI alerts
+  const aiAlertsQuery = query(
+    collection(db, "aiAlerts"),
+    where("nurseId", "==", nurseUid),
+    where("status", "==", "active")
+  );
+  const aiAlertsSnapshot = await getDocs(aiAlertsQuery);
+  document.getElementById("valAlerts").textContent = aiAlertsSnapshot.size;
+});
+
+// Logout logic
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  auth.signOut().then(() => {
+    window.location.href = "login.html";
+  });
+});
+</script>
+
+</body>
+</html>

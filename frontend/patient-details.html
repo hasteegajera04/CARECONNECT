@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Patient Information</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --input-bg: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 80px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-card {
+  background: var(--card-bg);
+  border-radius: 35px;
+  padding: 50px;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1px;
+}
+
+.form-header p {
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.section-title i { color: var(--primary); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-left: 5px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 18px;
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.input-wrapper textarea {
+  width: 100%;
+  padding: 16px 16px 16px 50px;
+  border-radius: 18px;
+  border: 1.5px solid transparent;
+  background: var(--input-bg);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: 0.3s;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus,
+.input-wrapper textarea:focus {
+  outline: none;
+  background: white;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(10, 115, 255, 0.1);
+}
+
+.full-width { grid-column: 1 / -1; }
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 50px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 15px 30px rgba(10, 115, 255, 0.2);
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(10, 115, 255, 0.3);
+}
+
+.submit-btn i { font-size: 20px; }
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='patient-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1>Patient Information</h1>
+      <p>Complete your profile to receive personalized care services</p>
+    </div>
+
+    <div class="section-title">
+      <i class="fa-solid fa-user-circle"></i> Basic Details
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-user"></i>
+          <input id="patientName" type="text" placeholder="Full Legal Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Age</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-cake-candles"></i>
+          <input id="age" type="number" placeholder="Current Age">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-venus-mars"></i>
+          <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Blood Group</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-droplet"></i>
+          <select id="bloodGroup">
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <i class="fa-solid fa-file-medical"></i> Medical Information
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Chronic Conditions</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <input id="diseases" type="text" placeholder="Diabetes, Hypertension, etc.">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Known Allergies</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <input id="allergies" type="text" placeholder="Latex, Penicillin, Peanut, etc.">
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label>Medical History</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-notes-medical"></i>
+          <textarea id="history" placeholder="Summary of past surgeries, chronic illnesses, or recent treatments..."></textarea>
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label>Current Medications</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-pills"></i>
+          <textarea id="medications" placeholder="List of medications and their dosages..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <i class="fa-solid fa-users"></i> Emergency Contact
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Guardian Name</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-user-shield"></i>
+          <input id="guardianName" type="text" placeholder="Contact Person Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Relationship</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-people-arrows"></i>
+          <select id="guardianRelation">
+            <option>Son</option>
+            <option>Daughter</option>
+            <option>Spouse</option>
+            <option>Parent</option>
+            <option>Sibling</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-phone"></i>
+          <input id="guardianPhone" type="tel" placeholder="+91 XXXXX XXXXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contact Email</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-envelope"></i>
+          <input id="guardianEmail" type="email" placeholder="guardian@email.com">
+        </div>
+      </div>
+    </div>
+
+    <button id="saveBtn" class="submit-btn">
+      <i class="fa-solid fa-cloud-arrow-up"></i> Save Profile Details
+    </button>
+  </div>
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const saveBtn = document.getElementById("saveBtn");
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+  currentUser = user;
+  const snap = await getDoc(doc(db, "users", user.uid));
+  if (snap.exists()) {
+    const d = snap.data();
+    document.getElementById("patientName").value = d.patientName || "";
+    document.getElementById("age").value = d.age || "";
+    document.getElementById("gender").value = d.gender || "Male";
+    document.getElementById("bloodGroup").value = d.bloodGroup || "A+";
+    document.getElementById("diseases").value = d.diseases || "";
+    document.getElementById("allergies").value = d.allergies || "";
+    document.getElementById("history").value = d.history || "";
+    document.getElementById("medications").value = d.medications || "";
+    document.getElementById("guardianName").value = d.guardianName || "";
+    document.getElementById("guardianRelation").value = d.guardianRelation || "Son";
+    document.getElementById("guardianPhone").value = d.guardianPhone || "";
+    document.getElementById("guardianEmail").value = d.guardianEmail || "";
+  }
+});
+
+saveBtn.addEventListener("click", async () => {
+  if (!currentUser) return;
+  
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+  const patientData = {
+    patientName: document.getElementById("patientName").value,
+    age: document.getElementById("age").value,
+    gender: document.getElementById("gender").value,
+    bloodGroup: document.getElementById("bloodGroup").value,
+    diseases: document.getElementById("diseases").value,
+    allergies: document.getElementById("allergies").value,
+    history: document.getElementById("history").value,
+    medications: document.getElementById("medications").value,
+    guardianName: document.getElementById("guardianName").value,
+    guardianRelation: document.getElementById("guardianRelation").value,
+    guardianPhone: document.getElementById("guardianPhone").value,
+    guardianEmail: document.getElementById("guardianEmail").value,
+    profileCompleted: true,
+    updatedAt: new Date()
+  };
+
+  try {
+    await setDoc(doc(db, "users", currentUser.uid), patientData, { merge: true });
+    alert("✅ Information saved successfully!");
+    window.location.href = "patient-dashboard.html";
+  } catch (err) {
+    console.error(err);
+    alert("Error saving details. Please try again.");
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save Profile Details';
+  }
+});
+</script>
+
+</body>
+</html>
+

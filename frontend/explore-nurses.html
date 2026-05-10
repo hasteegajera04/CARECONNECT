@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Find Professional Nurses</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 80px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -1.5px;
+}
+
+.page-header p {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+/* FILTERS */
+.filters-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter-chip {
+  padding: 12px 24px;
+  border-radius: 20px;
+  background: white;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.filter-chip:hover {
+  transform: translateY(-2px);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.filter-chip.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 10px 20px rgba(10, 115, 255, 0.2);
+}
+
+/* GRID */
+.nurse-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.nurse-card {
+  background: var(--card-bg);
+  border-radius: 32px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+  transition: 0.4s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.nurse-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.1);
+  border-color: var(--primary);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.nurse-avatar-img {
+  width: 70px;
+  height: 70px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.nurse-info h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.nurse-info .specialty {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.stat-item i { color: var(--primary); }
+
+.price-box {
+  background: #f8fafc;
+  padding: 15px 20px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.price-box span:first-child {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.price-box .amount {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.view-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.view-btn:hover {
+  box-shadow: 0 10px 20px rgba(10, 115, 255, 0.2);
+}
+
+.no-nurses {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 100px 0;
+}
+
+.no-nurses i {
+  font-size: 60px;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='patient-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="patient-dashboard.html" class="back-btn">
+    <i class="fa-solid fa-house"></i> Dashboard
+  </a>
+</div>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Find Professional Care</h1>
+    <p>Browse verified nurses specialized in home healthcare</p>
+  </div>
+
+  <div class="filters-container">
+    <div class="filter-chip active" data-filter="all" onclick="setFilter('all', this)">All Nurses</div>
+    <div class="filter-chip" data-filter="dementia" onclick="setFilter('dementia', this)">Dementia Care</div>
+    <div class="filter-chip" data-filter="postop" onclick="setFilter('postop', this)">Post-Operative</div>
+    <div class="filter-chip" data-filter="icu" onclick="setFilter('icu', this)">ICU / Critical</div>
+    <div class="filter-chip" data-filter="elderly" onclick="setFilter('elderly', this)">Elderly Care</div>
+  </div>
+
+  <div class="nurse-grid" id="nurseGrid">
+    <!-- Nurses loaded via JS -->
+  </div>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const nurseGrid = document.getElementById("nurseGrid");
+
+async function loadNurses() {
+  nurseGrid.innerHTML = '<div class="no-nurses"><i class="fa-solid fa-spinner fa-spin"></i><p>Finding available nurses...</p></div>';
+
+  try {
+    const q = query(collection(db, "users"), where("role", "==", "nurse"));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      nurseGrid.innerHTML = '<div class="no-nurses"><i class="fa-solid fa-user-slash"></i><p>No nurses currently available. Check back soon!</p></div>';
+      return;
+    }
+
+    nurseGrid.innerHTML = "";
+    snapshot.forEach(docSnap => {
+      const n = docSnap.data();
+      const card = document.createElement("div");
+      card.className = "nurse-card";
+      
+      // Map database fields to UI fields
+      const displayName = n.name || n.fullName || "Certified Nurse";
+      const displaySpecialty = n.specialty || n.specialization || "General Care";
+      const displayExperience = n.experience || "5 Years";
+      const displayLocation = n.location || n.city || "Nearby";
+      const displayImage = n.image || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=2070";
+
+      card.dataset.care = displaySpecialty.toLowerCase();
+
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="nurse-avatar-img">
+            <img src="${displayImage}" alt="${displayName}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+          </div>
+          <div class="nurse-info">
+            <div class="specialty">${displaySpecialty}</div>
+            <h3>${displayName}</h3>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item"><i class="fa-solid fa-briefcase"></i> ${displayExperience} exp</div>
+          <div class="stat-item"><i class="fa-solid fa-location-dot"></i> ${displayLocation}</div>
+          <div class="stat-item"><i class="fa-solid fa-star" style="color:#f59e0b"></i> ${n.rating || '4.9'} Rating</div>
+          <div class="stat-item"><i class="fa-solid fa-circle-check" style="color:#22c55e"></i> Verified</div>
+        </div>
+
+        <div class="price-box">
+          <span>Daily Rate</span>
+          <span class="amount">₹${n.cost || "1200"} / day</span>
+        </div>
+
+        <button class="view-btn" onclick="viewProfile('${docSnap.id}')">
+          View Profile <i class="fa-solid fa-arrow-right-long"></i>
+        </button>
+      `;
+      nurseGrid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.error(err);
+    nurseGrid.innerHTML = '<p style="text-align:center; color:red;">Connection error. Please try again.</p>';
+  }
+}
+
+window.setFilter = function(type, btn) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cards = document.querySelectorAll('.nurse-card');
+  cards.forEach(card => {
+    if (type === 'all' || card.dataset.care.includes(type)) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+};
+
+window.viewProfile = function(uid) {
+  window.location.href = `nurse-profile.html?uid=${uid}`;
+};
+
+loadNurses();
+</script>
+
+</body>
+</html>
+

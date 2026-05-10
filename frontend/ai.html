@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | AI Health Assistant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --high: #ef4444;
+  --medium: #f59e0b;
+  --low: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 30px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .container { grid-template-columns: 1fr; }
+}
+
+.left-panel { display: flex; flex-direction: column; gap: 30px; }
+
+.page-header {
+  margin-bottom: 10px;
+}
+
+.page-header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -1.5px;
+}
+
+.page-header p { color: var(--text-muted); font-size: 16px; }
+
+/* AI HERO */
+.ai-hero-card {
+  background: linear-gradient(135deg, #0a73ff, #0056cc);
+  padding: 40px;
+  border-radius: 35px;
+  color: white;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-hero-card::after {
+  content: '\f0e7';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  font-size: 200px;
+  opacity: 0.05;
+  transform: rotate(20deg);
+}
+
+.ai-icon-large {
+  width: 70px;
+  height: 70px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.assessment-text h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
+.assessment-text p { font-size: 16px; line-height: 1.6; opacity: 0.95; }
+
+/* INSIGHT GRID */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.insight-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 25px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: 0.3s;
+}
+
+.insight-card:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(10, 115, 255, 0.1); }
+
+.insight-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.insight-header i { font-size: 20px; }
+.insight-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
+.insight-text { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+/* CHAT INTERFACE */
+.chat-panel {
+  background: var(--card-bg);
+  border-radius: 35px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  position: sticky;
+  top: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 20px 25px;
+  background: white;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-header .status-dot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+}
+
+.chat-header span { font-weight: 700; color: var(--text-main); font-size: 15px; }
+
+.chat-messages {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 14px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.message.ai {
+  align-self: flex-start;
+  background: #f1f5f9;
+  color: var(--text-main);
+  border-bottom-left-radius: 5px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--primary);
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+.chat-input-area {
+  padding: 20px;
+  background: white;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 15px;
+  border: 1.5px solid #e2e8f0;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.chat-input-area input:focus { border-color: var(--primary); }
+
+.send-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+
+.typing-indicator {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 5px;
+  display: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='patient-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+  <a href="patient-dashboard.html" class="back-btn">
+    <i class="fa-solid fa-house"></i> Dashboard
+  </a>
+</div>
+
+<div class="container">
+  
+  <div class="left-panel">
+    <div class="page-header">
+      <h1>AI Health Assistant</h1>
+      <p>Intelligent, real-time feedback based on your clinical data.</p>
+    </div>
+
+    <!-- OVERALL HERO -->
+    <div class="ai-hero-card">
+      <div class="ai-icon-large">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </div>
+      <div class="assessment-text">
+        <h2 id="ai-status-title">Clinical Analysis Status</h2>
+        <p id="ai-main-summary">
+          Gathering your latest vital data for analysis... 
+          Our AI model provides insights into your trends and potential health risks.
+        </p>
+      </div>
+    </div>
+
+    <div class="insight-grid" id="insight-grid">
+      <!-- Dynamic insights will be injected here -->
+      <div class="insight-card">
+        <div class="insight-header" style="color: var(--primary);">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <div class="insight-title">Neural Assessment</div>
+        </div>
+        <p class="insight-text">Analyzing patterns in heart rate variability and blood pressure consistency over the past 24 hours.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-header" style="color: var(--primary);">
+          <i class="fa-solid fa-microscope"></i>
+          <div class="insight-title">Predictive Screening</div>
+        </div>
+        <p class="insight-text">Comparing current sugar levels with baseline history to predict potential glycemic events.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT INTERFACE -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="status-dot"></div>
+      <span>Live AI Counselor</span>
+    </div>
+    
+    <div class="chat-messages" id="chat-messages">
+      <div class="message ai">
+        Hello! I'm your CareConnect AI. I have access to your latest health vitals. How can I assist you today?
+      </div>
+    </div>
+
+    <div class="typing-indicator" id="typing-indicator">AI is thinking...</div>
+    
+    <div class="chat-input-area">
+      <input type="text" id="user-input" placeholder="Ask about your health...">
+      <button class="send-btn" id="send-btn">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const chatMessages = document.getElementById('chat-messages');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+const typingIndicator = document.getElementById('typing-indicator');
+
+let currentVitals = {};
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Listen to latest vitals
+  const vitalsRef = doc(db, "users", user.uid, "vitals", "latest");
+  onSnapshot(vitalsRef, (snap) => {
+    if (snap.exists()) {
+      currentVitals = snap.data();
+      generateInitialSummary();
+    }
+  });
+});
+
+async function generateInitialSummary() {
+  if (!currentVitals.aiResult) return;
+  
+  const summaryEl = document.getElementById('ai-main-summary');
+  const titleEl = document.getElementById('ai-status-title');
+  
+  titleEl.innerText = `Health Profile: ${currentVitals.aiResult.risk_label} Risk`;
+  summaryEl.innerText = `AI analysis detected ${currentVitals.aiResult.reasons.join(', ')}. Ask me anything about these readings in the chat!`;
+
+  // Inject dynamic insight cards
+  const grid = document.getElementById('insight-grid');
+  grid.innerHTML = '';
+  
+  currentVitals.aiResult.reasons.forEach((reason, index) => {
+    const card = document.createElement('div');
+    card.className = 'insight-card';
+    card.innerHTML = `
+      <div class="insight-header" style="color: ${currentVitals.aiResult.risk_label === 'High' ? 'var(--high)' : 'var(--medium)'}">
+        <i class="fa-solid fa-circle-info"></i>
+        <div class="insight-title">Alert ${index + 1}</div>
+      </div>
+      <p class="insight-text">${reason}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+async function handleSendMessage() {
+  const text = userInput.value.trim();
+  if (!text) return;
+
+  // Add user message
+  appendMessage('user', text);
+  userInput.value = '';
+
+  // Show typing
+  typingIndicator.style.display = 'block';
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        vitals: currentVitals
+      })
+    });
+
+    const data = await response.json();
+    typingIndicator.style.display = 'none';
+
+    if (data.status === 'success') {
+      appendMessage('ai', data.reply);
+    } else {
+      appendMessage('ai', "I'm having trouble connecting to my brain right now. Please ensure the backend is running.");
+    }
+  } catch (err) {
+    typingIndicator.style.display = 'none';
+    appendMessage('ai', "Connection error. Please make sure the AI server is active.");
+  }
+}
+
+function appendMessage(role, text) {
+  const msg = document.createElement('div');
+  msg.className = `message ${role}`;
+  msg.innerText = text;
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+sendBtn.addEventListener('click', handleSendMessage);
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') handleSendMessage();
+});
+
+</script>
+
+</body>
+</html>
+
+

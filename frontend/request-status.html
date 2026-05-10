@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareConnect | Request Status</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #0a73ff;
+  --primary-dark: #0056cc;
+  --accent: #4ade80;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --pending: #f59e0b;
+  --accepted: #22c55e;
+  --rejected: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.header-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon i { color: white; font-size: 18px; }
+.logo span { font-weight: 700; font-size: 20px; color: var(--text-main); }
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 60px;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.status-card {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 35px;
+  box-shadow: 0 30px 60px rgba(10, 115, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.status-header {
+  margin-bottom: 30px;
+}
+
+.status-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-pending { background: #fffbeb; color: #d97706; }
+.badge-accepted { background: #dcfce7; color: #15803d; }
+.badge-rejected { background: #fee2e2; color: #b91c1c; }
+
+.nurse-preview {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 25px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.nurse-preview h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nurse-preview h3 i { color: var(--primary); }
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.detail-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.detail-value {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.back-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(10, 115, 255, 0.2);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header-nav">
+  <div class="logo" onclick="location.href='patient-dashboard.html'">
+    <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <span>CareConnect</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="status-card">
+    <div class="status-header">
+      <h1>Care Request Status</h1>
+      <div id="statusBadge" class="status-badge badge-pending">
+        <i class="fa-solid fa-clock-rotate-left"></i> Loading...
+      </div>
+    </div>
+
+    <div class="nurse-preview">
+      <h3><i class="fa-solid fa-user-nurse"></i> Assigned Provider</h3>
+      <div class="detail-row">
+        <span class="detail-label">Nurse Name</span>
+        <span class="detail-value" id="nurseName">--</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Specialization</span>
+        <span class="detail-value" id="specialization">--</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Experience</span>
+        <span class="detail-value" id="experience">--</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Location</span>
+        <span class="detail-value" id="city">--</span>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="location.href='patient-dashboard.html'">
+      <i class="fa-solid fa-house"></i> Return to Dashboard
+    </button>
+  </div>
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const q = query(collection(db, "careRequests"), where("userId", "==", user.uid));
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      document.getElementById("statusBadge").textContent = "No Request Found";
+      return;
+    }
+
+    const reqData = snap.docs[0].data();
+    const statusBadge = document.getElementById("statusBadge");
+    const status = (reqData.status || "pending").toLowerCase();
+    
+    statusBadge.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${status.toUpperCase()}`;
+    statusBadge.className = `status-badge badge-${status}`;
+
+    const nurseSnap = await getDoc(doc(db, "users", reqData.nurseId));
+    if (nurseSnap.exists()) {
+      const n = nurseSnap.data();
+      
+      // Map database fields to UI fields
+      const displayName = n.name || n.fullName || "Certified Nurse";
+      const displaySpecialty = n.specialty || n.specialization || "General Care";
+      const displayExperience = n.experience ? (n.experience.includes('Years') ? n.experience : `${n.experience} Years`) : "5 Years";
+      const displayLocation = n.location || n.city || "Nearby";
+
+      document.getElementById("nurseName").textContent = displayName;
+      document.getElementById("specialization").textContent = displaySpecialty;
+      document.getElementById("experience").textContent = displayExperience;
+      document.getElementById("city").textContent = displayLocation;
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>
+
+</body>
+</html>
+
