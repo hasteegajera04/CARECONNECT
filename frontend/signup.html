@@ -210,12 +210,55 @@ body::after {
 
 .signup-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 20px rgba(10, 115, 255, 0.2);
+  box-shadow: 0 12px 20px rgba(10, 115, 255, 0.25);
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+/* ── Outlined switch button ── */
+.switch-btn {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  letter-spacing: 0.2px;
+}
+
+.switch-btn:hover {
+  background: rgba(10, 115, 255, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(10, 115, 255, 0.12);
 }
 
 .footer-text {
   text-align: center;
-  margin-top: 25px;
+  margin-top: 18px;
   font-size: 14px;
   color: var(--text-muted);
 }
@@ -276,8 +319,15 @@ body::after {
 
     <button id="signupBtn" class="signup-btn" type="button">Create Account</button>
 
+    <!-- Switch to Login -->
+    <div class="divider">or</div>
+
+    <a href="login.html" class="switch-btn" id="goToLogin">
+      <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right:8px;"></i>Sign In to Existing Account
+    </a>
+
     <div class="footer-text">
-      Already have an account? <a href="login.html">Sign In</a>
+      Already registered? <a href="login.html">Log in here</a>
     </div>
   </div>
 </div>

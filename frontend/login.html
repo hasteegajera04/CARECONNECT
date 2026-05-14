@@ -232,10 +232,54 @@ body::after {
   transform: translateY(0);
 }
 
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+/* ── Outlined switch button ── */
+.switch-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  letter-spacing: 0.2px;
+}
+
+.switch-btn:hover {
+  background: rgba(10, 115, 255, 0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(10, 115, 255, 0.12);
+}
+
 .footer-links {
-  margin-top: 25px;
+  margin-top: 18px;
   font-size: 14px;
   color: var(--text-muted);
+  text-align: center;
 }
 
 .footer-links a {
@@ -247,7 +291,6 @@ body::after {
 .footer-links a:hover {
   text-decoration: underline;
 }
-
 </style>
 </head>
 
@@ -287,8 +330,15 @@ body::after {
 
     <button id="loginBtn" class="login-btn" type="button">Sign In</button>
 
+    <!-- Switch to Signup -->
+    <div class="divider">or</div>
+
+    <a href="signup.html" class="switch-btn" id="goToSignup">
+      <i class="fa-solid fa-user-plus" style="margin-right:8px;"></i>Create New Account
+    </a>
+
     <div class="footer-links">
-      Don't have an account? <a href="signup.html">Create Account</a>
+      New to CareConnect? <a href="signup.html">Sign up here</a>
     </div>
   </div>
 </div>
@@ -358,4 +408,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
